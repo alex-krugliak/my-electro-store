@@ -1,19 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 
-import { ConfigModule } from '@spartacus/core';
-import { translations, translationChunksConfig } from '@spartacus/assets';
-import { B2cStorefrontModule, defaultCmsContentConfig, b2cLayoutConfig } from '@spartacus/storefront';
-import {LayoutSlotConfig} from '@spartacus/storefront/layout/config/layout-config';
+import {ConfigModule} from '@spartacus/core';
+import {translationChunksConfig, translations} from '@spartacus/assets';
+import {b2cLayoutConfig, B2cStorefrontModule, defaultCmsContentConfig, ProductListComponent} from '@spartacus/storefront';
+import {SpartacusProductListModule} from './customize/cms/product-list/spartacus-product-list.module';
+
+
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    SpartacusProductListModule,
     BrowserModule,
     AppRoutingModule,
     B2cStorefrontModule.withConfig({
@@ -25,7 +28,10 @@ import {LayoutSlotConfig} from '@spartacus/storefront/layout/config/layout-confi
         occ: {
           baseUrl: 'https://localhost:9002',
           prefix: '/rest/v2/',
-          legacy: true
+          legacy: true,
+          endpoints:{
+            comparisons: 'comparisons/${productCode}?fields=DEFAULT,customAttribute'
+          }
         }
       },
       i18n: {
@@ -44,11 +50,13 @@ import {LayoutSlotConfig} from '@spartacus/storefront/layout/config/layout-confi
           },
         },
       },
-      layoutSlots: b2cLayoutConfig.layoutSlots
+      layoutSlots: b2cLayoutConfig.layoutSlots,
+
     }),
     ConfigModule.withConfigFactory(defaultCmsContentConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
