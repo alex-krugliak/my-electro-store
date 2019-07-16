@@ -16,7 +16,7 @@ import {SpartacusProductListItemComponent} from './product-info/spartacus-produc
 import {CurrencyService, I18nModule, LanguageService, ProductSearchService, RoutingService, UrlModule} from '@spartacus/core';
 import {SpartacusProductListComponentService} from './container/spartacus-product-list-component.service';
 import {SpartacusProductViewComponent} from './product-view/spartacus-product-view.component';
-import {AddToComparingModule} from '../comparing/add-to-comparing.module';
+import {ProductComparingCmsModule} from '../product-comparing/product-comparing.cms.module';
 
 
 @NgModule({
@@ -31,7 +31,7 @@ import {AddToComparingModule} from '../comparing/add-to-comparing.module';
     MediaModule,
     StarRatingModule,
     AddToCartModule,
-    AddToComparingModule,
+    ProductComparingCmsModule,
     B2cStorefrontModule.withConfig({
       cmsComponents: {
         CMSProductListComponent: {

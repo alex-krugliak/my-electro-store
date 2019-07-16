@@ -23,4 +23,4 @@ import {IconModule, ItemCounterModule, SpinnerModule} from '@spartacus/storefron
   entryComponents: [AddToComparingComponent],
   exports: [AddToComparingComponent],
 })
-export class AddToComparingModule {}
+export class ProductComparingCmsModule {}

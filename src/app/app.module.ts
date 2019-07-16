@@ -8,6 +8,7 @@ import {ConfigModule} from '@spartacus/core';
 import {translationChunksConfig, translations} from '@spartacus/assets';
 import {b2cLayoutConfig, B2cStorefrontModule, defaultCmsContentConfig, ProductListComponent} from '@spartacus/storefront';
 import {SpartacusProductListModule} from './customize/cms/product-list/spartacus-product-list.module';
+import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.core.module';
 
 
 
@@ -19,6 +20,7 @@ import {SpartacusProductListModule} from './customize/cms/product-list/spartacus
     SpartacusProductListModule,
     BrowserModule,
     AppRoutingModule,
+    ComparisonsCoreModule,
     B2cStorefrontModule.withConfig({
       authentication: {
         client_id: 'client4kyma',

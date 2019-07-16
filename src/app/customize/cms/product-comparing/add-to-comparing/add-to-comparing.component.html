@@ -1,9 +1,8 @@
-
 <button
   class="btn btn-primary btn-block"
   type="button"
-  [disabled]="isAdded"
+  [disabled]="(isPresentInComparing$ | async)"
   (click)="addToComparing()"
 >
-  Add to compare
+  Compare
 </button>
