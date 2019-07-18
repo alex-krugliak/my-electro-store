@@ -32,7 +32,7 @@ import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.co
           prefix: '/rest/v2/',
           legacy: true,
           endpoints:{
-            comparisons: 'comparisons/${productCode}?fields=DEFAULT,customAttribute'
+            comparisons: 'users/${userId}/comparisons'
           }
         }
       },

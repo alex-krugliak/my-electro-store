@@ -1,4 +1,9 @@
-import {ADD_COMPARING_PRODUCT_SUCCESS, ComparingProductAction, LOAD_PRODUCT_COMPARING_SUCCESS} from '../actions/product-comparing.action';
+import {
+  ADD_COMPARING_PRODUCT_SUCCESS,
+  ComparingProductAction,
+  LOAD_PRODUCT_COMPARING_SUCCESS,
+  REMOVE_COMPARING_PRODUCT, REMOVE_COMPARING_PRODUCT_SUCCESS
+} from '../actions/product-comparing.action';
 import {ProductComparingListState} from '../comparisons.state';
 
 
@@ -21,6 +26,15 @@ export function reducer(
     }
 
     case ADD_COMPARING_PRODUCT_SUCCESS: {
+      const productCodeList = action.payload.productCodeList;
+
+      return {
+        ...state,
+        productCodeList
+      };
+    }
+
+    case REMOVE_COMPARING_PRODUCT_SUCCESS: {
       const productCodeList = action.payload.productCodeList;
 
       return {

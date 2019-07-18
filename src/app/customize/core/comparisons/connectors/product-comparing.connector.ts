@@ -9,8 +9,15 @@ export class ProductComparingConnector {
   constructor(protected adapter: ProductComparingAdapter) {
   }
 
-  get(): Observable<string[]> {
-    debugger;
-    return this.adapter.load();
+  get(userUid: string): Observable<string[]> {
+    return this.adapter.load(userUid);
+  }
+
+  addProduct(userUid: string, productCode: string): Observable<string[]> {
+    return this.adapter.add(userUid, productCode);
+  }
+
+  removeProduct(userUid: string, productCode: string): Observable<string[]> {
+    return this.adapter.remove(userUid, productCode);
   }
 }

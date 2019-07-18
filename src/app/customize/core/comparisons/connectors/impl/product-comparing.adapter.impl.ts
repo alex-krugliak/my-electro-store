@@ -1,8 +1,12 @@
 import {Injectable} from '@angular/core';
 import {ProductComparingAdapter} from '../product-comparing.adapter';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConverterService, OccEndpointsService} from '@spartacus/core';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+
+
+const COMPARISONS_ENDPOINT = 'comparisons';
 
 @Injectable()
 export class ProductComparingAdapterImpl implements ProductComparingAdapter {
@@ -13,14 +17,48 @@ export class ProductComparingAdapterImpl implements ProductComparingAdapter {
   ) {
   }
 
-  load(): Observable<string[]> {
-    debugger;
-    return of(['a', '779842']);
+  load(userUid: string): Observable<string[]> {
+    const url = this.getEndpoint(userUid);
+    return this.http
+      .get<any>(url)
+      .pipe(map(result => {
+        return result.productCodes;
+      }));
   }
 
-  protected getEndpoint(code: string): string {
-    return this.occEndpoints.getUrl('product', {
-      productCode: code,
+  add(userUid: string, productCode: string): Observable<string[]> {
+    const url = this.getEndpoint(userUid) + '/add?productCode=' + productCode;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
     });
+
+    return this.http.post<any>(url, null, {
+      headers,
+    }).pipe(map(result => {
+      return result.productCodes;
+    }));
+  }
+
+  remove(userUid: string, productCode: string): Observable<string[]> {
+    const url = this.getEndpoint(userUid) + '/remove?productCode=' + productCode;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.delete<any>(url,  {
+      headers,
+    }).pipe(map(result => {
+      return result.productCodes;
+    }));
+  }
+
+
+  protected getEndpoint = (userUid: string): string => {
+    const baseUrl = this.occEndpoints.getUrl(
+      COMPARISONS_ENDPOINT,
+      {userId: userUid});
+    return baseUrl;
   }
 }

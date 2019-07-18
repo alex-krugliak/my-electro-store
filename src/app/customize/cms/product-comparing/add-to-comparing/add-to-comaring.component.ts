@@ -22,7 +22,6 @@ export class AddToComparingComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
     this.isPresentInComparing$ = this.productComparingService.getProductComparingData()
       .pipe(
         filter(productComparingList => !!productComparingList),

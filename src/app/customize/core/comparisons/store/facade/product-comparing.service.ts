@@ -5,7 +5,7 @@ import {tap} from 'rxjs/operators';
 import {ComparisonsState} from '../comparisons.state';
 import {getProductComparingList} from '../selectors/product-comparing.selectors';
 import {Observable} from 'rxjs';
-import {AddComparingProduct, LoadDefaultProductComparing} from '../actions/product-comparing.action';
+import {AddComparingProduct, LoadDefaultProductComparing, RemoveComparingProduct} from '../actions/product-comparing.action';
 
 
 @Injectable({providedIn: 'root'})
@@ -26,6 +26,10 @@ export class ProductComparingService {
 
   addComparingProduct(productCode: string): void {
     this.productComparingStore.dispatch(new AddComparingProduct(productCode));
+  }
+
+  removeComparingProduct(productCode: string): void {
+    this.productComparingStore.dispatch(new RemoveComparingProduct(productCode));
   }
 
 }
