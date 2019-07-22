@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {Observable, of} from 'rxjs';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {forkJoin, Observable, of} from 'rxjs';
+import {catchError, filter, first, map, switchMap} from 'rxjs/operators';
 import {ProductComparingConnector} from '../../connectors/product-comparing.connector';
 import {
   ADD_COMPARING_PRODUCT,
@@ -16,7 +16,11 @@ import {
   RemoveComparingProductFail,
   RemoveComparingProductSuccess
 } from '../actions/product-comparing.action';
-import {UserService} from '@spartacus/core';
+import {Product, ProductService, UserService} from '@spartacus/core';
+import {ProductComparing} from '../comparisons.state';
+import * as _ from 'lodash';
+import {isDefined} from '../../../../utils/common.utils';
+import {ProductComparingService} from '../facade/product-comparing.service';
 
 export const PRODUCT_COMPARING_KEY = 'spartacus-product-comparing';
 
@@ -32,27 +36,25 @@ export class ProductComparingEffects {
         }));
       }),
       switchMap(user => {
+
         if (Object.keys(user).length === 0) {
 
           const productList = localStorage.getItem(PRODUCT_COMPARING_KEY) ?
             JSON.parse(localStorage.getItem(PRODUCT_COMPARING_KEY)) : [];
 
-          return of(new LoadProductComparingSuccess({
-            productCodeList: productList
-          }));
+          return this._getAllComparingProductsData(productList);
         } else {
           return this.productComparingConnector.get(user.uid).pipe(
-            map(data => {
-              return new LoadProductComparingSuccess({
-                productCodeList: data
-              });
+            switchMap(productCodes => {
+              this._clearLocalStorage();
+              return this._getAllComparingProductsData(productCodes);
             }),
             catchError(error => of(new LoadProductComparingFail({
               message: error.message
             })))
           );
         }
-      })
+      }),
     );
 
   @Effect()
@@ -78,16 +80,15 @@ export class ProductComparingEffects {
             productList.push(params.product);
             localStorage.setItem(PRODUCT_COMPARING_KEY, JSON.stringify(productList));
           }
-
+          this.productComparingService.updateProductComparingData();
           return of(new AddComparingProductSuccess({
-            productCodeList: productList
+            productCode: params.product
           }));
         } else {
           return this.productComparingConnector.addProduct(params.currentUser.uid, params.product).pipe(
             map(data => {
-              return new AddComparingProductSuccess({
-                productCodeList: data
-              });
+              this.productComparingService.updateProductComparingData();
+              return new AddComparingProductSuccess(data);
             }),
             catchError(error => {
               return of(new AddComparingProductFail({
@@ -113,6 +114,7 @@ export class ProductComparingEffects {
         }));
       }),
       switchMap(params => {
+
         if (Object.keys(params.currentUser).length === 0) {
 
           let productList = localStorage.getItem(PRODUCT_COMPARING_KEY) ?
@@ -124,15 +126,13 @@ export class ProductComparingEffects {
           }
           localStorage.setItem(PRODUCT_COMPARING_KEY, JSON.stringify(productList));
 
-          return of(new RemoveComparingProductSuccess({
-            productCodeList: productList
-          }));
+          this.productComparingService.updateProductComparingData();
+          return of(new RemoveComparingProductSuccess());
         } else {
           return this.productComparingConnector.removeProduct(params.currentUser.uid, params.product).pipe(
             map(data => {
-              return new RemoveComparingProductSuccess({
-                productCodeList: data
-              });
+              this.productComparingService.updateProductComparingData();
+              return new RemoveComparingProductSuccess();
             }),
             catchError(error => {
               return of(new RemoveComparingProductFail({
@@ -144,10 +144,61 @@ export class ProductComparingEffects {
       })
     );
 
+  private _clearLocalStorage(): void {
+    localStorage.setItem(PRODUCT_COMPARING_KEY, JSON.stringify([]));
+  }
+
+  private _getAllComparingProductsData(productCodeList: string[]): Observable<LoadProductComparingSuccess> {
+    const occRequests = this._getRequestsForProductsData(productCodeList);
+
+    return forkJoin(occRequests).pipe(
+      map(result => {
+        const comparingProducts = this._populateProductComparingState(result);
+        return new LoadProductComparingSuccess({
+          comparingProductList: comparingProducts
+        });
+      })
+    );
+  }
+
+  private _getRequestsForProductsData(productCodeList: string[]): Observable<Product>[] {
+    const occRequests = [];
+    productCodeList.forEach(productCode => {
+      occRequests.push(this.productService.get(productCode).pipe(
+        filter(product => isDefined(product)),
+        first()
+      ));
+    });
+
+    return occRequests;
+  }
+
+  private _populateProductComparingState(productList: Product[]): ProductComparing[] {
+    const groupedByCategory = _.groupBy(productList, product => product.categories[0].code);
+    const comparingProducts = [];
+    for (var categoryKey in groupedByCategory) {
+
+      const categoryProducts = groupedByCategory[categoryKey];
+      const categoryData = _.flatMap(categoryProducts, product => product.categories)
+        .find(category => category.code === categoryKey);
+
+      const productComparing: ProductComparing = {
+        categoryProducts: categoryProducts,
+        categoryCode: categoryData.code,
+        categoryName: categoryData.name
+      };
+      comparingProducts.push(productComparing);
+    }
+
+    return comparingProducts
+  }
+
   constructor(
     private actions$: Actions,
     private productComparingConnector: ProductComparingConnector,
     private userService: UserService,
+    private productService: ProductService,
+    private productComparingService: ProductComparingService
   ) {
   }
 }

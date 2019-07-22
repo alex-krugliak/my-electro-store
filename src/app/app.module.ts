@@ -11,7 +11,6 @@ import {SpartacusProductListModule} from './customize/cms/product-list/spartacus
 import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.core.module';
 
 
-
 @NgModule({
   declarations: [
     AppComponent
@@ -28,7 +27,7 @@ import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.co
       },
       backend: {
         occ: {
-          baseUrl: 'https://localhost:9002',
+          baseUrl: 'https://localhost:9012',
           prefix: '/rest/v2/',
           legacy: true,
           endpoints:{
@@ -43,16 +42,34 @@ import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.co
       },
       context: {
         urlEncodingParameters: ['baseSite', 'language', 'currency'],
-        parameters: {
-          baseSite: {
-            values: [
-              'electronics-spa'
-            ],
-            persistence: 'route',
-          },
-        },
+        baseSite: ['electronics-spa']
       },
-      layoutSlots: b2cLayoutConfig.layoutSlots,
+      layoutSlots: {
+        header: {
+          md: {
+            slots: [
+              'PreHeader',
+              'SiteContext',
+              'SiteLinks',
+              'SiteLogo',
+              'SearchBox',
+              'SiteLogin',
+              'ComparingIcon',
+              'MiniCart',
+              'NavigationBar',
+            ],
+          },
+          xs: {
+            slots: ['PreHeader', 'SiteLogo', 'SearchBox', 'ComparingIcon', 'MiniCart'],
+          },
+        }
+      },
+      icon :{
+        symbols: {
+          COMPARING: 'fas fa-balance-scale fa-2x',
+          CART: 'fas fa-shopping-cart',
+        }
+      }
 
     }),
     ConfigModule.withConfigFactory(defaultCmsContentConfig)

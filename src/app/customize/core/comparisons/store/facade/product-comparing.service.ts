@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 
 import {tap} from 'rxjs/operators';
-import {ComparisonsState} from '../comparisons.state';
+import {ComparisonsState, ProductComparing} from '../comparisons.state';
 import {getProductComparingList} from '../selectors/product-comparing.selectors';
 import {Observable} from 'rxjs';
 import {AddComparingProduct, LoadDefaultProductComparing, RemoveComparingProduct} from '../actions/product-comparing.action';
@@ -14,7 +14,7 @@ export class ProductComparingService {
     protected productComparingStore: Store<ComparisonsState>) {
   }
 
-  getProductComparingData(): Observable<string[]> {
+  getProductComparingData(): Observable<ProductComparing[]> {
     return this.productComparingStore.pipe(select(getProductComparingList),
       tap(productComparing => {
         if (!productComparing) {
@@ -22,6 +22,10 @@ export class ProductComparingService {
         }
       })
     );
+  }
+
+  updateProductComparingData(): void {
+    this.productComparingStore.dispatch(new LoadDefaultProductComparing());
   }
 
   addComparingProduct(productCode: string): void {

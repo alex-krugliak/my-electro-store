@@ -69,7 +69,7 @@ export class RemoveComparingProductFail implements Action {
 export class RemoveComparingProductSuccess implements Action {
   readonly type = REMOVE_COMPARING_PRODUCT_SUCCESS;
 
-  constructor(public payload: any) {
+  constructor() {
   }
 }
 

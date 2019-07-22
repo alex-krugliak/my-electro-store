@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit,} f
 import {ProductComparingService} from '../../../core/comparisons/store/facade/product-comparing.service';
 import {Observable} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
+import * as _ from 'lodash';
 
 
 @Component({
@@ -26,7 +27,9 @@ export class AddToComparingComponent implements OnInit {
       .pipe(
         filter(productComparingList => !!productComparingList),
         map((productComparingList) => {
-            return productComparingList.includes(this.productCode);
+
+          const products = _.flatten(_.map(productComparingList, 'categoryProducts'));
+          return !!_.find(products, (product) => product.code === this.productCode);
           }
         ));
   }

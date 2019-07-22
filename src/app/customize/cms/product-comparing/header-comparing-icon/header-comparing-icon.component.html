@@ -1,0 +1,20 @@
+<a class="product-comparing-component">
+  <span *ngIf="(comparingProductsAmount$ | async) > 0" class="comparing-product-count">{{comparingProductsAmount$ | async}}</span>
+  <cx-icon [type]="iconTypes.COMPARING"></cx-icon>
+
+  <div #menuDiv class="header-popup-comparison-b " >
+    <div class="menu-wrapper">
+      <ul class="header-popup header-popup-comparison-full">
+        <li *ngFor="let node of categories$ | async" class="header-popup-comparison-full-i">
+          <cx-generic-link [url]="node.url">
+            {{ node.title }} ({{node.comparingProductsAmount}})
+          </cx-generic-link>
+
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</a>
+
+
