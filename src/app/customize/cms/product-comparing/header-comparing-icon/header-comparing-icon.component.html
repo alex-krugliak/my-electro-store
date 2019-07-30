@@ -1,8 +1,8 @@
-<a class="product-comparing-component">
+<a href="https://todo" class="product-comparing-component">
   <span *ngIf="(comparingProductsAmount$ | async) > 0" class="comparing-product-count">{{comparingProductsAmount$ | async}}</span>
   <cx-icon [type]="iconTypes.COMPARING"></cx-icon>
 
-  <div #menuDiv class="header-popup-comparison-b " >
+  <div #menuDiv class="header-popup-comparison-b " *ngIf="(comparingProductsAmount$ | async) > 0">
     <div class="menu-wrapper">
       <ul class="header-popup header-popup-comparison-full">
         <li *ngFor="let node of categories$ | async" class="header-popup-comparison-full-i">
