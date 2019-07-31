@@ -6,6 +6,9 @@ import {filter, map} from 'rxjs/operators';
 import {isDefined} from '../../../utils/common.utils';
 import * as _ from 'lodash';
 
+export const SPARTACUS_COMPARING_CATEGORIES_URL = '/comparing-categories';
+export const SPARTACUS_COMPARING_PRODUCT_URL_PREFIX = '/comparing-products/';
+
 export interface ComparingCategoryNode {
   title: string;
   url: string;
@@ -22,6 +25,7 @@ export class HeaderComparingIconComponent implements OnInit, OnDestroy {
   iconTypes = SPARTACUS_ICON_TYPE;
   comparingProductsAmount$: Observable<number>;
   categories$: Observable<ComparingCategoryNode[]>;
+  comparingCategoriesUrl = SPARTACUS_COMPARING_CATEGORIES_URL;
 
   @ViewChild('menuDiv', {static: false})
   menuDiv: ElementRef;
@@ -61,12 +65,16 @@ export class HeaderComparingIconComponent implements OnInit, OnDestroy {
 
             return {
               title: categoryComparingData.categoryName,
-              url: 'http://todo/' + categoryComparingData.categoryCode,
+              url: SPARTACUS_COMPARING_PRODUCT_URL_PREFIX + categoryComparingData.categoryCode,
               comparingProductsAmount: categoryComparingData.categoryProducts.length
             };
           });
         }));
 
+  }
+
+  goProductComparing() {
+    debugger;
   }
 
 

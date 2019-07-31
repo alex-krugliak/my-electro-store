@@ -6,9 +6,10 @@ import {AppComponent} from './app.component';
 
 import {ConfigModule} from '@spartacus/core';
 import {translationChunksConfig, translations} from '@spartacus/assets';
-import {b2cLayoutConfig, B2cStorefrontModule, defaultCmsContentConfig, ProductListComponent} from '@spartacus/storefront';
+import {B2cStorefrontModule, CmsPageGuard, defaultCmsContentConfig, PageLayoutComponent} from '@spartacus/storefront';
 import {SpartacusProductListModule} from './customize/cms/product-list/spartacus-product-list.module';
 import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.core.module';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -20,6 +21,21 @@ import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.co
     BrowserModule,
     AppRoutingModule,
     ComparisonsCoreModule,
+    RouterModule.forChild([
+      {
+        path: 'comparing-categories',
+        data: {pageLabel: 'category-comparing'},
+        component: PageLayoutComponent,
+        canActivate: [CmsPageGuard]
+      },
+      {
+        // path with dynamic param:
+        path: 'comparing-products/:id',
+        data: {pageLabel: 'product-comparing'},
+        component: PageLayoutComponent,
+        canActivate: [CmsPageGuard]
+      }
+    ]),
     B2cStorefrontModule.withConfig({
       authentication: {
         client_id: 'client4kyma',
@@ -27,10 +43,10 @@ import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.co
       },
       backend: {
         occ: {
-          baseUrl: 'https://localhost:9012',
+          baseUrl: 'https://192.168.20.135:9012',
           prefix: '/rest/v2/',
           legacy: true,
-          endpoints:{
+          endpoints: {
             comparisons: 'users/${userId}/comparisons'
           }
         }
@@ -64,7 +80,7 @@ import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.co
           },
         }
       },
-      icon :{
+      icon: {
         symbols: {
           COMPARING: 'fas fa-balance-scale fa-2x',
           CART: 'fas fa-shopping-cart',

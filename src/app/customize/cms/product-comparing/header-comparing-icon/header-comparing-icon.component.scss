@@ -3,18 +3,28 @@ cx-header-comparing-icon {
 
   position: relative;
 
-  a.product-comparing-component {
+  .product-comparing-component {
+    position: relative;
+    display: inline-block;
+  }
+
+  div.product-comparing-component:hover {
+
+    .header-popup-comparison-b {
+      display: block;
+      z-index: 1000;
+    }
+
+  }
+
+  a.product-comparing-link {
     display: flex;
-    width: 50px;
+    width: 68px;
     height: 48px;
     text-decoration: none;
     justify-content: space-around;
     color: white;
     position: relative;
-
-    .header-popup-comparison-b{
-      display: none;
-    }
 
     span.comparing-product-count {
       position: absolute;
@@ -35,18 +45,10 @@ cx-header-comparing-icon {
     }
   }
 
-  a.product-comparing-component:hover {
+  a.product-comparing-link:hover {
     color: grey;
     text-decoration: none;
 
-    .header-popup-comparison-b{
-      display: block;
-      z-index: 1000;
-    }
-  }
-
-  .display-none {
-    display: none;
   }
 
   .header-popup-comparison-full {
@@ -70,6 +72,7 @@ cx-header-comparing-icon {
   }
 
   .header-popup-comparison-b {
+    display: none;
     position: absolute;
     right: 0;
     top: 40px;
@@ -78,7 +81,7 @@ cx-header-comparing-icon {
     border-radius: 10px;
     border: 2px solid black;
 
-    .menu-wrapper{
+    .menu-wrapper {
       margin-top: 5px;
     }
 

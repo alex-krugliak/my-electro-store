@@ -6,6 +6,8 @@ import {AddToComparingComponent} from './add-to-comparing/add-to-comaring.compon
 import {B2cStorefrontModule, GenericLinkModule, IconModule, ItemCounterModule, SpinnerModule} from '@spartacus/storefront';
 import {HeaderComparingIconComponent} from './header-comparing-icon/header-comparing-icon.component';
 import {SpartacusMiscCmsModule} from '../misc/misc.cms.module';
+import {ComparingCategoriesComponent} from './comparing-categories/comparing-categories.component';
+import {ProductComparingComponent} from './product-comparing/product-comparing.component';
 
 
 @NgModule({
@@ -23,12 +25,18 @@ import {SpartacusMiscCmsModule} from '../misc/misc.cms.module';
       cmsComponents: {
         CMSProductComparingMenuIconComponent: {
           component: HeaderComparingIconComponent
+        },
+        CMSCategoryComparingPageComponent: {
+          component: ComparingCategoriesComponent
+        },
+        CMSProductComparingPageComponent: {
+          component: ProductComparingComponent
         }
       }
     }),
   ],
-  declarations: [AddToComparingComponent, HeaderComparingIconComponent],
-  entryComponents: [HeaderComparingIconComponent],
+  declarations: [AddToComparingComponent, HeaderComparingIconComponent, ComparingCategoriesComponent, ProductComparingComponent],
+  entryComponents: [HeaderComparingIconComponent, ComparingCategoriesComponent, ProductComparingComponent],
   exports: [AddToComparingComponent],
 })
 export class ProductComparingCmsModule {

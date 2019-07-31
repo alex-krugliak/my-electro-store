@@ -1,7 +1,10 @@
-<a href="https://todo" class="product-comparing-component">
-  <span *ngIf="(comparingProductsAmount$ | async) > 0" class="comparing-product-count">{{comparingProductsAmount$ | async}}</span>
-  <cx-icon [type]="iconTypes.COMPARING"></cx-icon>
+<div class="product-comparing-component" >
+  <a class="product-comparing-link" [routerLink]="comparingCategoriesUrl">
+    <span *ngIf="(comparingProductsAmount$ | async) > 0"
+          class="comparing-product-count">{{comparingProductsAmount$ | async}}</span>
+    <cx-icon [type]="iconTypes.COMPARING"></cx-icon>
 
+  </a>
   <div #menuDiv class="header-popup-comparison-b " *ngIf="(comparingProductsAmount$ | async) > 0">
     <div class="menu-wrapper">
       <ul class="header-popup header-popup-comparison-full">
@@ -15,6 +18,6 @@
       </ul>
     </div>
   </div>
-</a>
+</div>
 
 
