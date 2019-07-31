@@ -16,11 +16,12 @@ import {
   RemoveComparingProductFail,
   RemoveComparingProductSuccess
 } from '../actions/product-comparing.action';
-import {Product, ProductService, UserService} from '@spartacus/core';
+import {Product, ProductService, StateWithUser, UsersSelectors} from '@spartacus/core';
 import {ProductComparing} from '../comparisons.state';
 import * as _ from 'lodash';
 import {isDefined} from '../../../../utils/common.utils';
 import {ProductComparingService} from '../facade/product-comparing.service';
+import {select, Store} from '@ngrx/store';
 
 export const PRODUCT_COMPARING_KEY = 'spartacus-product-comparing';
 
@@ -31,7 +32,9 @@ export class ProductComparingEffects {
     this.actions$.pipe(
       ofType(LOAD_DEFAULT_PRODUCT_COMPARING),
       switchMap(() => {
-        return this.userService.get().pipe(map(user => {
+        return this.userStore.pipe(
+          select(UsersSelectors.getDetails),
+          map(user => {
           return user;
         }));
       }),
@@ -63,7 +66,9 @@ export class ProductComparingEffects {
       ofType(ADD_COMPARING_PRODUCT),
       map((action: AddComparingProduct) => action.payload),
       switchMap(productCode => {
-        return this.userService.get().pipe(map(user => {
+        return this.userStore.pipe(
+          select(UsersSelectors.getDetails),
+          map(user => {
           return {
             currentUser: user,
             product: productCode
@@ -106,7 +111,9 @@ export class ProductComparingEffects {
       ofType(REMOVE_COMPARING_PRODUCT),
       map((action: RemoveComparingProduct) => action.payload),
       switchMap(productCode => {
-        return this.userService.get().pipe(map(user => {
+        return this.userStore.pipe(
+          select(UsersSelectors.getDetails),
+          map(user => {
           return {
             currentUser: user,
             product: productCode
@@ -196,7 +203,7 @@ export class ProductComparingEffects {
   constructor(
     private actions$: Actions,
     private productComparingConnector: ProductComparingConnector,
-    private userService: UserService,
+    private userStore: Store<StateWithUser>,
     private productService: ProductService,
     private productComparingService: ProductComparingService
   ) {

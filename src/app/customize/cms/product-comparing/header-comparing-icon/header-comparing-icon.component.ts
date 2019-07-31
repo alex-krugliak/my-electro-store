@@ -73,9 +73,4 @@ export class HeaderComparingIconComponent implements OnInit, OnDestroy {
 
   }
 
-  goProductComparing() {
-    debugger;
-  }
-
-
 }
