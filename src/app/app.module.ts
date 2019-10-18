@@ -43,7 +43,7 @@ import {RouterModule} from '@angular/router';
       },
       backend: {
         occ: {
-          baseUrl: 'https://192.168.20.135:9012',
+          baseUrl: 'https://46.172.70.69:9012',
           prefix: '/rest/v2/',
           legacy: true,
           endpoints: {

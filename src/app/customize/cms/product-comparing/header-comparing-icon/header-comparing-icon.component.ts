@@ -26,6 +26,7 @@ export class HeaderComparingIconComponent implements OnInit, OnDestroy {
   comparingProductsAmount$: Observable<number>;
   categories$: Observable<ComparingCategoryNode[]>;
   comparingCategoriesUrl = SPARTACUS_COMPARING_CATEGORIES_URL;
+  isMenuVisible: boolean = true;
 
   @ViewChild('menuDiv', {static: false})
   menuDiv: ElementRef;
@@ -71,6 +72,10 @@ export class HeaderComparingIconComponent implements OnInit, OnDestroy {
           });
         }));
 
+  }
+
+  closeMenu() {
+    this.isMenuVisible = false;
   }
 
 }
