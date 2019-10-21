@@ -158,6 +158,13 @@ export class ProductComparingEffects {
   private _getAllComparingProductsData(productCodeList: string[]): Observable<LoadProductComparingSuccess> {
     const occRequests = this._getRequestsForProductsData(productCodeList);
 
+    if (!occRequests || occRequests.length === 0) {
+      return of(new LoadProductComparingSuccess({
+          comparingProductList: []
+        })
+      );
+    }
+
     return forkJoin(occRequests).pipe(
       map(result => {
         const comparingProducts = this._populateProductComparingState(result);

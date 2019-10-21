@@ -10,6 +10,7 @@ import {B2cStorefrontModule, CmsPageGuard, defaultCmsContentConfig, PageLayoutCo
 import {SpartacusProductListModule} from './customize/cms/product-list/spartacus-product-list.module';
 import {ComparisonsCoreModule} from './customize/core/comparisons/comparisons.core.module';
 import {RouterModule} from '@angular/router';
+import {customTranslationChunksConfig, customTranslations} from './customize/assets/translations/translations';
 
 
 @NgModule({
@@ -52,8 +53,8 @@ import {RouterModule} from '@angular/router';
         }
       },
       i18n: {
-        resources: translations,
-        chunks: translationChunksConfig,
+        resources: customTranslations,
+        chunks: customTranslationChunksConfig,
         fallbackLang: 'en'
       },
       context: {
