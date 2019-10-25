@@ -1,1 +1,2 @@
 <div>Todo product comparing page</div>
+<div *ngIf="(comparingCategory$ | async) as comparingCategory">{{comparingCategory.categoryCode}}</div>
