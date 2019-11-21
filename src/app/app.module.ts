@@ -44,7 +44,7 @@ import {customTranslationChunksConfig, customTranslations} from './customize/ass
       },
       backend: {
         occ: {
-          baseUrl: 'https://46.172.70.69:9012',
+          baseUrl: 'https://localhost:9012',
           prefix: '/rest/v2/',
           legacy: true,
           endpoints: {

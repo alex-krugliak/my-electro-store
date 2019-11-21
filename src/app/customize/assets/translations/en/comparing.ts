@@ -5,5 +5,9 @@ export const customComparing = {
     emptyComparingList: 'You don\'t have products in your comparing list. Please add products to the comparing.',
     inStock: 'Present in stock',
     outStock: 'Out of stock'
+  },
+  comparingProductsPage: {
+    allFeature: 'All features',
+    distinctFeature: 'Only distinct'
   }
 };

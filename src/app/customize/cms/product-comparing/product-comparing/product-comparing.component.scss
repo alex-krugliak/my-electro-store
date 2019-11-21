@@ -1,0 +1,118 @@
+cx-product-comparing {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  .p-comparing-features {
+    width: 100%;
+    display: table;
+
+    .p-comparing-top-row {
+      display: table-row;
+
+      .p-comparing-menu {
+        width: 250px;
+        display: table-cell;
+        position: relative;
+
+        .p-comparing-tabs {
+          display: block;
+          list-style: none;
+          position: absolute;
+          left: 5px;
+          bottom: 0;
+          padding: 0;
+
+          .p-comparing-tabs-i {
+            display: inline-block;
+            position: relative;
+            margin: 0 5px;
+            line-height: 35px;
+
+            a{
+              color: blue;
+            }
+          }
+
+          .p-comparing-tabs-i.active a{
+            color: black;
+          }
+
+          .p-comparing-tabs-i.active:before {
+            height: 4px;
+            background: #00a046;
+          }
+
+          .p-comparing-tabs-i:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+          }
+        }
+      }
+
+      .p-comparing-detail {
+        display: table-cell;
+      }
+
+      .p-comparing-product {
+        display: flex;
+        width: 370px;
+        padding: 10px;
+        min-width: 300px;
+
+        .c-product-image {
+          margin-left: 10px;
+          display: inline-block;
+
+          a {
+            width: 80px;
+            height: 80px;
+            display: inline-block;
+            border: 1px solid #ccc;
+
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+
+        .c-product-info {
+          margin-left: 15px;
+          display: inline-block;
+
+        }
+
+        .c-product-status.available {
+          color: green;
+        }
+
+        .c-product-status.unavailable {
+          color: red;
+        }
+      }
+    }
+
+    .p-comparing-feature-row {
+      display: table-row;
+      height: 35px;
+
+      .p-comparing-feature-title {
+        min-width: 250px;
+        display: table-cell;
+      }
+
+      .p-comparing-feature-value {
+        min-width: 100px;
+        display: table-cell;
+
+        span{
+          margin: 5px;
+        }
+      }
+    }
+  }
+}

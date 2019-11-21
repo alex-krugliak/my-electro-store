@@ -1,2 +1,61 @@
-<div>Todo product comparing page</div>
-<div *ngIf="(comparingCategory$ | async) as comparingCategory">{{comparingCategory.categoryCode}}</div>
+<div *ngIf="(comparingCategory$ | async) as comparingCategory">
+
+
+  <div class="p-comparing-features">
+    <div class="p-comparing-top-row">
+      <div class="p-comparing-menu">
+        <ul class="p-comparing-tabs">
+          <li class="p-comparing-tabs-i" [ngClass]="{'active': !isOnlyUniqueFeatures}">
+            <a href="javascript:;" class="p-comparing-tabs-link" (click)="switchToAllFeatures()">{{ 'comparingProductsPage.allFeature' | cxTranslate }}</a>
+          </li>
+          <li class="p-comparing-tabs-i" [ngClass]="{'active': isOnlyUniqueFeatures}">
+            <a href="javascript:;" class="p-comparing-tabs-link" (click)="switchToUniqueFeatures()">{{ 'comparingProductsPage.distinctFeature' | cxTranslate }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="p-comparing-detail" *ngFor="let comparingProduct of comparingCategory.categoryProducts">
+        <div class="p-comparing-product" >
+          <a href="javascript:;" class="c-productt-section-remove" (click)="removeProductFromComparing(comparingProduct)">
+            <i class="fa fa-times" aria-hidden="false"></i>
+          </a>
+          <div class="c-product-image">
+            <a [routerLink]="{ cxRoute: 'product', params: comparingProduct } | cxUrl">
+              <img *ngIf="comparingProduct.images" src="{{comparingProduct.images?.PRIMARY.thumbnail.url}}"
+                   alt="{{comparingProduct.images?.PRIMARY.thumbnail.altText}}"
+                   title="{{comparingProduct.images?.PRIMARY.thumbnail.altText}}" style="border:none"/>
+            </a>
+          </div>
+          <div class="c-product-info" [class.available]="comparingProduct.availableForPickup">
+            <div class="c-product-info-title">
+              {{ comparingProduct.summary }}
+            </div>
+            <div class="c-product-status-wrap">
+              <div class="c-product-status available" *ngIf="comparingProduct.stock?.stockLevelStatus === 'inStock'">
+                {{ 'comparingCategoriesPage.inStock' | cxTranslate }}
+              </div>
+              <div class="c-product-status unavailable" *ngIf="comparingProduct.stock?.stockLevelStatus === 'outOfStock'">
+                {{ 'comparingCategoriesPage.inStock' | cxTranslate }}
+              </div>
+            </div>
+            <div class="rating">
+              <cx-star-rating [rating]="comparingProduct.averageRating" [disabled]="true"></cx-star-rating>
+            </div>
+            <div class="c-product-price">
+              <div class="g-price-uah">
+                {{comparingProduct.price.formattedValue }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-comparing-feature-row" *ngFor="let featureTitles of getFeatures(comparingCategory)">
+
+      <div class="p-comparing-feature-title"><span>{{featureTitles.title }}</span></div>
+      <div class="p-comparing-feature-value" *ngFor="let comparingProduct of comparingCategory.categoryProducts">
+        <cx-comparing-product-feature-value [featureCode]="featureTitles.code" [product]="comparingProduct"></cx-comparing-product-feature-value>
+      </div>
+    </div>
+  </div>
+
+</div>

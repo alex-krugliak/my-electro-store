@@ -6,6 +6,7 @@ import {ProductComparing} from '../../../core/comparisons/store/comparisons.stat
 import {Observable} from 'rxjs';
 import * as _ from 'lodash';
 import {isDefined} from '../../../utils/common.utils';
+import {Product} from '@spartacus/core';
 
 @Component({
   selector: 'cx-product-comparing',
@@ -15,6 +16,7 @@ import {isDefined} from '../../../utils/common.utils';
 export class ProductComparingComponent implements OnInit {
 
   comparingCategory$: Observable<ProductComparing>;
+  isOnlyUniqueFeatures = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,7 +26,6 @@ export class ProductComparingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger
 
     this.comparingCategory$ = this.route.paramMap.pipe(
       switchMap((params) => {
@@ -36,7 +37,67 @@ export class ProductComparingComponent implements OnInit {
         );
       }),
     );
+
   }
 
+  getFeatures(comparingCategory) {
+    const classifications = _.flatten(_.map(comparingCategory.categoryProducts, 'classifications'));
+    const featureList = _.flatten(_.map(classifications, 'features'));
+
+    if (!featureList) {
+      return [];
+    }
+
+    const featureCodeList = [];
+    _.each(featureList, feature => {
+      featureCodeList.push(feature.code);
+    });
+
+    const distinctFeatureList = [];
+    _.each(_.uniq(featureCodeList), featureCode => {
+      const feature = _.find(featureList, feature => feature.code === featureCode);
+      if (!this.isOnlyUniqueFeatures ||
+        (this.isOnlyUniqueFeatures && this.isFeatureValuesDistinctForProducts(feature.code, comparingCategory.categoryProducts))) {
+        distinctFeatureList.push({
+          code: feature.code,
+          title: feature.name
+        });
+      }
+      featureCodeList.push(feature.code);
+    });
+
+    return distinctFeatureList;
+  }
+
+  private isFeatureValuesDistinctForProducts(featureCode: string, productList: Product[]) {
+    if (!productList) return true;
+
+    let featureValues = [];
+    _.each(productList, product => {
+      const productFeatures = _.flatten(_.map(product.classifications, 'features'));
+      const currentFeature = _.find(productFeatures, feature => feature.code === featureCode);
+      if (!currentFeature || !currentFeature.featureValues) {
+        featureValues.push('');
+      } else {
+        _.each(currentFeature.featureValues, featureValue => {
+          featureValues.push(!featureValue.value ? '' : featureValue.value);
+        });
+      }
+    });
+
+    return _.uniq(featureValues).length > 1;
+  }
+
+  removeProductFromComparing(product: Product) {
+    this.productComparingService.removeComparingProduct(product.code);
+  }
+
+  switchToUniqueFeatures() {
+    this.isOnlyUniqueFeatures = true;
+  }
+
+  switchToAllFeatures() {
+    this.isOnlyUniqueFeatures = false;
+  }
 
 }
