@@ -1,6 +1,6 @@
 # MyElectroStore
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
+This project is an example of using Hybris Angular storefront - Spartacus https://sap.github.io/spartacus-docs/spartacus-faq/ . It adds the 'Product Comparing Page', that is not present in the OOTB
 
 ## Development server
 
